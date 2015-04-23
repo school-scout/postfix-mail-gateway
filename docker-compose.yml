@@ -1,0 +1,5 @@
+postfix:
+  build: .
+  ports:
+    - "25:25"
+  env_file: .env
