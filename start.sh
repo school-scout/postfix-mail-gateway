@@ -10,5 +10,9 @@ done
 
 postconf myhostname=$MYHOSTNAME mynetworks="172.17.42.1 $MYNETWORKS"
 
-/usr/local/bin/syslog-stdout.py &
+# Redirect syslog to stdout if USE_SYSLOG is not set
+if [ -z $USE_SYSLOG ]; then
+  /usr/local/bin/syslog-stdout.py &
+fi
+
 exec /usr/lib/postfix/master -d
