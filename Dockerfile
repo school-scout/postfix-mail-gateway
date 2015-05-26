@@ -1,7 +1,7 @@
 FROM debian:jessie
 
 RUN apt-get update
-RUN DEBIAN_FRONTEND=noninteractive apt-get -y install postfix rsyslog
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y install postfix
 
 RUN bash -c \
   'FILES="localtime services resolv.conf hosts nsswitch.conf"; \
