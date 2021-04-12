@@ -1,5 +1,9 @@
-postfix:
-  build: .
-  ports:
-    - "25:25"
-  env_file: .env
+version: "3.7"
+
+services:
+  postfix:
+    build: .
+    image: schoolscout/postfix-mail-gateway
+    ports:
+      - "25:25"
+    env_file: .env

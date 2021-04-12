@@ -1,7 +1,8 @@
-FROM debian:jessie
+FROM debian:stable
 
-RUN apt-get update
-RUN DEBIAN_FRONTEND=noninteractive apt-get -y install postfix
+RUN apt-get update \
+ && DEBIAN_FRONTEND=noninteractive apt-get -y --no-install-recommends install postfix python-minimal \
+ && rm -fR /var/lib/apt/lists/*
 
 COPY syslog-stdout.py /usr/local/bin/syslog-stdout.py
 COPY start.sh /start.sh

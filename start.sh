@@ -15,4 +15,4 @@ if [ -z $USE_SYSLOG ]; then
   /usr/local/bin/syslog-stdout.py &
 fi
 
-exec /usr/lib/postfix/master -d
+exec /usr/lib/postfix/sbin/master -d
