@@ -7,3 +7,6 @@ services:
     ports:
       - "25:25"
     env_file: .env
+    # optional
+    #volumes:
+      #- /etc/hostname:/etc/mailhostname:ro

@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -euo pipefail
 
 # Copy current DNS config etc. into postfix chroot
 FILES="localtime services resolv.conf hosts nsswitch.conf"
@@ -8,10 +8,23 @@ for file in $FILES; do
   chmod a+rX /var/spool/postfix/etc/${file}
 done
 
-postconf myhostname=$MYHOSTNAME mynetworks="172.17.42.1 $MYNETWORKS"
+if [[ -f /etc/mailhostname ]]; then
+  MYHOSTNAME="$(cat /etc/mailhostname)"
+
+  if [[ -n "${MYDOMAIN:-}" ]]; then
+    if [[ "$MYHOSTNAME" =~ [.] ]]; then
+      postconf mydomain="$MYDOMAIN"
+    else
+      MYHOSTNAME="$MYHOSTNAME.$MYDOMAIN"
+    fi
+  fi
+fi
+
+postconf myhostname="$MYHOSTNAME" mynetworks="172.17.42.1 $MYNETWORKS"
+
 
 # Redirect syslog to stdout if USE_SYSLOG is not set
-if [ -z $USE_SYSLOG ]; then
+if [[ -z "${USE_SYSLOG:-}" ]]; then
   /usr/local/bin/syslog-stdout.py &
 fi
 
