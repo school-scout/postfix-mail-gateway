@@ -1,7 +1,8 @@
 FROM debian:stable
 
 RUN apt-get update \
- && DEBIAN_FRONTEND=noninteractive apt-get -y --no-install-recommends install postfix python-minimal \
+ && DEBIAN_FRONTEND=noninteractive apt-get -y --no-install-recommends install postfix python3 \
+ && apt-get clean \
  && rm -fR /var/lib/apt/lists/*
 
 COPY syslog-stdout.py /usr/local/bin/syslog-stdout.py

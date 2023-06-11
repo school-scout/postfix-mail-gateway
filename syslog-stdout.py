@@ -1,10 +1,6 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 import sys
 import socket
-import re
-import thread
-import time
-import datetime
 import os
 
 bufsiz=2048
@@ -68,8 +64,9 @@ class SyslogListener(object):
             pri=None
             msg=data
         msg=msg.strip()
-        print "%s:%s"%(pri,msg)
-    
+        print("%s:%s"%(pri,msg))
+        sys.stdout.flush()
+
     def listen(self):
         try:
             os.remove('/dev/log')
@@ -79,9 +76,9 @@ class SyslogListener(object):
             sock = socket.socket( socket.AF_UNIX, socket.SOCK_DGRAM )
             sock.bind("/dev/log")
             self.sock=sock
-            
+
         except:
-            print "Socket error: (%s) %s" % ( sys.exc_info()[1][0], sys.exc_info()[1][1] )
+            print("Socket error: (%s) %s" % ( sys.exc_info()[1][0], sys.exc_info()[1][1] ))
             sys.exit(1)
 
         while 1:
@@ -93,21 +90,18 @@ class SyslogListener(object):
                 return
             except socket.error:
                 pass
-            
+
     def shutdown(self):
         try:
             self.sock.close()
         except:
             pass
-        
+
         try:
             os.remove('/dev/log')
         except:
             pass
 
 if __name__=='__main__':
-    #disable output buffer
-    sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)
     lst = SyslogListener()
     lst.listen()
-    
